@@ -21,12 +21,12 @@ function Chat() {
       }
     }
     verify();
-  });
+  }, []);
 
   useEffect(() => {
     async function loggedInUser() {
       if (currentUser) {
-        if (currentUser.isAvatarImageSet === true) {
+        if (currentUser.isAvatarImageSet === false) {
           const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
           setContacts(data.data);
         } else {
