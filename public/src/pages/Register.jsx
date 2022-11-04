@@ -10,6 +10,12 @@ import { registerRoute } from "../utils/apiRoutes";
 function Register() {
   const navigate = useNavigate()
 
+  useEffect(() => {
+    if (localStorage.getItem("application-user")) {
+      navigate("/");
+    }
+  }, [navigate]);
+
   const [values, setValues] = useState({
     username: "",
     email: "",
