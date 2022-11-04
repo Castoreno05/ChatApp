@@ -35,7 +35,7 @@ function Login() {
         toast.error(data.msg, toastyOptions);
       }
       if (data.status === true) {
-        localStorage.setItem("application-user", JSON.stringify(data.user));
+        localStorage.setItem("application-user", JSON.stringify(data.myUser));
         navigate("/");
       }
     }
