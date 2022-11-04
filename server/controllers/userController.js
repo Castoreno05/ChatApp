@@ -31,11 +31,17 @@ module.exports.login = async (req, res, next) => {
     const { username, password } = req.body;
     const myUser = await User.findOne({ username });
     if (!myUser)
-      return res.json({ msg: "Incorrect username or password", status: false });
+      return res.json({
+        msg: "Username or Password is incorrect",
+        status: false,
+      });
 
     const passwordValidation = await bcrypt.compare(password, myUser.password);
     if (!passwordValidation)
-      return res.json({ msg: "Incorrect username or password", status: false });
+      return res.json({
+        msg: "Username or Password is incorrect",
+        status: false,
+      });
     delete myUser.password;
 
     return res.json({ status: true, myUser });
@@ -43,3 +49,33 @@ module.exports.login = async (req, res, next) => {
     next(ex);
   }
 };
+
+module.exports.getUsers = async (req, res, next) => {
+  try {
+    const users = await User.find({ _id: { $ne: req.params.id } }).select([
+      "email",
+      "username",
+      "_id",
+    ]);
+    return res.json(users);
+  } catch (ex) {
+    next(ex);
+  }
+};
+
+// module.exports.setAvatar = async (req, res, next) => {
+//   try {
+//     const userId = req.params.id;
+//     const avatarImage = req.body.image;
+//     const userData = await User.findByIdAndUpdate(userId, {
+//       isAvatarImageSet: true,
+//       avatarImage,
+//     });
+//     return res.json({
+//       isSet: userData.isAvatarImageSet,
+//       image: userData.avatarImage,
+//     });
+//   } catch (ex) {
+//     next(ex);
+//   }
+// };
