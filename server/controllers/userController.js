@@ -1,5 +1,5 @@
 const User = require("../model/userModel");
-const bcrypt = require("bcrypt");
+const bycrypt = require("bcryptjs");
 
 module.exports.register = async (req, res, next) => {
   try {
@@ -13,7 +13,7 @@ module.exports.register = async (req, res, next) => {
     if (verifyEmail)
       return req.json({ msg: "Email has been taken", status: false });
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bycrypt.hash(password, 10);
     const user = await User.create({
       email,
       username,
@@ -36,7 +36,7 @@ module.exports.login = async (req, res, next) => {
         status: false,
       });
 
-    const passwordValidation = await bcrypt.compare(password, myUser.password);
+    const passwordValidation = await bycrypt.compare(password, myUser.password);
     if (!passwordValidation)
       return res.json({
         msg: "Username or Password is incorrect",
